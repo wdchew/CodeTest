@@ -95,7 +95,6 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldFindIndexByBinarySearch(){
-    int i = 0;
     int search = 64;
     int[] nums = new int[]{1,3,4,6,8,11,13,15,16,19,21,24,28,31,35,36,37,40,42,50,52,58,60,64};       
     int searchIndex = binarySearch(nums, search, 0, nums.length - 1, 0);
@@ -127,7 +126,7 @@ public class AlgorithmsTest {
   public void shouldCountNodesInBinaryTree(){
     TreeNode root = createBinaryTree();
     
-    assertTrue("should count nodes in binary tree", 5 == countNodes(root));
+    assertTrue("should count nodes in binary tree", 5 == TreeNode.size(root));
   }
   
   @Test
@@ -165,19 +164,14 @@ public class AlgorithmsTest {
     return root;
   }
   
-  public int countNodes(TreeNode root){
-    if (root == null){
-      return 0; // the tree is empty.  It contains no nodes
-    }else{
-      int count = 1;
-      count += countNodes(root.getLeft());
-      count += countNodes(root.getRight());
-      return count;
-    }
-  }
-  
-  
   private TreeNode createBinarySortTree() {
+//      10
+//     /  \
+//    8    12
+//   / \     \
+//  7   9     15
+//           /  \
+//         13    19
     TreeNode root = new TreeNode(10, new TreeNode(8), new TreeNode(12));
     TreeNode tmp = root.getLeft();    
     tmp.setLeft(new TreeNode(7));
@@ -208,13 +202,14 @@ public class AlgorithmsTest {
     assertTrue(TreeNode.lookup(bst, 13));
     assertTrue(TreeNode.lookup(bst, 19));
     
-    bst = treeInsert(null, 3);
-    treeInsert(bst, 2);
-    treeInsert(bst, 4);
-    treeInsert(bst, 10);
-    treeInsert(bst, 20);
-    treeInsert(bst, 19);
-    treeInsert(bst, 30);
+    bst = 
+    TreeNode.insert(null, 3);
+    TreeNode.insert(bst, 2);
+    TreeNode.insert(bst, 4);
+    TreeNode.insert(bst, 10);
+    TreeNode.insert(bst, 20);
+    TreeNode.insert(bst, 19);
+    TreeNode.insert(bst, 30);
     
     assertTrue(TreeNode.lookup(bst, 3));
     assertTrue(TreeNode.lookup(bst, 2));
@@ -225,29 +220,86 @@ public class AlgorithmsTest {
     
   }
   
-  private TreeNode treeInsert(TreeNode root, int value){
-    TreeNode runner = root;    
-    if (runner == null){
-      runner = new TreeNode(value);
-      return runner;
-    }
+  @Test
+  public void shouldBuild123BinaryTree(){
+	  // problem 1 at http://cslibrary.stanford.edu/110/BinaryTrees.html
+  //    2 
+  //   / \ 
+  //  1   3
+//    a: by calling newNode() three times, and using three pointer variables
+    TreeNode root = new TreeNode(2);
+    TreeNode left = new TreeNode(1);
+    TreeNode right = new TreeNode(3);
+    root.setLeft(left);
+    root.setRight(right);
+    assertTrue(root.getRight().getValue() == 3);
+//    b: by calling newNode() three times, and using only one pointer variable
+    root = new TreeNode(2);
+    root.setLeft(new TreeNode(1));
+    root.setRight(new TreeNode(3));
+    assertTrue(root.getLeft().getValue() == 1);
     
-    while(true){
-      if( value < runner.getValue()){
-        if (runner.getLeft() == null){
-          runner.setLeft(new TreeNode(value));
-          return runner;
-        }else{
-          runner = runner.getLeft();
-        }
-      }else{ // the value belongs on the right side, it's greater than the current value
-        if(runner.getRight() == null){
-          runner.setRight(new TreeNode(value));
-          return runner;
-        }else{
-          runner = runner.getRight();
-        }
-      }
-    }    
+//    c: by calling insert() three times passing it the root pointer to build up the tree
+    
+    root = TreeNode.insert(null, 2);
+    TreeNode.insert(root, 1);
+    TreeNode.insert(root, 3);
+    assertTrue(root.getValue() == 2);
+    assertTrue(root.getRight().getValue() == 3);
+    
   }
+  
+  public void shouldCountDepth(){
+    TreeNode root = createBinarySortTree();
+    int maxDepth = TreeNode.maxDepth(root);
+    
+    assertTrue(4 == maxDepth);
+  }
+  
+  
+//  public int countNodes(TreeNode root){
+//    if (root == null){
+//      return 0; // the tree is empty.  It contains no nodes
+//    }else{
+//      int count = 1;
+//      count += countNodes(root.getLeft());
+//      count += countNodes(root.getRight());
+//      return count;
+//    }
+//  }
+  @Test
+  public void shouldGetMinValueOfBinarySearchTree(){
+    TreeNode root = createBinarySortTree();
+    assertTrue(7 == minValue(root));
+  }
+  
+  private int minValue(TreeNode node){
+    
+    TreeNode current = node;
+    while(current.getLeft() != null){
+      current = current.getLeft();
+    }
+    return current.getValue();
+  }
+  
+  @Test
+  @Ignore
+  public void shouldPrintBinarySearchTreeInOrder(){
+    // problem # 5
+//    4 
+//   / \ 
+//  2   5 
+// / \ 
+//1   3
+    TreeNode root = TreeNode.insert(null, 4);
+    TreeNode.insert(root, 2);
+    TreeNode.insert(root, 5);
+    TreeNode.insert(root, 1);
+    TreeNode.insert(root, 3);
+    assertTrue(false);
+    
+    
+    
+  }
+  
 }

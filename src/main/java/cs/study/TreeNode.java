@@ -55,5 +55,54 @@ public class TreeNode {
     
     return false;    
   }
+  
+  public static TreeNode insert(TreeNode root, int value) {
+    TreeNode runner = root;
+    if (runner == null) {
+      runner = new TreeNode(value);
+      return runner;
+    }
+
+    while (true) {
+      if (value < runner.getValue()) {
+        if (runner.getLeft() == null) {
+          runner.setLeft(new TreeNode(value));
+          return runner;
+        } else {
+          runner = runner.getLeft();
+        }
+      } else { // the value belongs on the right side, it's greater than the
+               // current value
+        if (runner.getRight() == null) {
+          runner.setRight(new TreeNode(value));
+          return runner;
+        } else {
+          runner = runner.getRight();
+        }
+      }
+    }
+  }
+  public static int size(TreeNode root){
     
+    if (root == null){
+      return 0;
+    }else{
+      int count = 1;
+      count+= size(root.getLeft());
+      count+= size(root.getRight());
+      return count;
+    }
+    
+  }
+  
+  public static int maxDepth(TreeNode node){
+    if (node == null){
+      return 0;
+    }else{
+      int leftDepth = maxDepth(node.getLeft());
+      int rightDepth = maxDepth(node.getRight());
+      return (Math.max(leftDepth, rightDepth) + 1);
+    }
+  }
+  
 }
