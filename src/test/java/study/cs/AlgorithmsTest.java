@@ -283,7 +283,6 @@ public class AlgorithmsTest {
   }
   
   @Test
-  @Ignore
   public void shouldPrintBinarySearchTreeInOrder(){
     // problem # 5
 //    4 
@@ -291,15 +290,99 @@ public class AlgorithmsTest {
 //  2   5 
 // / \ 
 //1   3
+    TreeNode root = createTreeForPrint();
+    inOrderPrint(root);    
+  }
+
+  private TreeNode createTreeForPrint() {
+    //     4 
+    //    / \ 
+    //   2   5 
+    //  / \ 
+    // 1   3
     TreeNode root = TreeNode.insert(null, 4);
     TreeNode.insert(root, 2);
     TreeNode.insert(root, 5);
     TreeNode.insert(root, 1);
     TreeNode.insert(root, 3);
-    assertTrue(false);
+    return root;
+  }
+  
+  @Test
+  public void shouldPrintTreePostOrder(){
+    //     4 
+    //    / \ 
+    //   2   5 
+    //  / \ 
+    // 1   3
+    TreeNode root = createTreeForPrint();
+    printPostOrder(root);
+  }
+
+  private void printPostOrder(TreeNode root) {
+    if(root == null){
+      return;
+    }else{
+      printPostOrder(root.getLeft());
+      printPostOrder(root.getRight());
+      System.out.println(root.getValue());
+    }
+  }
+  
+  @Test
+  public void shouldSumPathsOfTree(){
     
+//        5 
+//       / \ 
+//      4   8 
+//     /   / \ 
+//    11  13  4 
+//   /  \      \ 
+//  7    2      1
+    TreeNode root = new TreeNode(5, new TreeNode(4), new TreeNode(8));
+    TreeNode left = root.getLeft();
+    left.setLeft(new TreeNode(11, new TreeNode(7), new TreeNode(2)));
+    TreeNode right = root.getRight();
+    right.setLeft(new TreeNode(13));
+    right.setRight(new TreeNode(4));
+    right = right.getRight();
+    right.setRight(new TreeNode(1));
     
+    assertTrue(hasPathSum(root, 27));
+    assertTrue(hasPathSum(root, 22));
+    assertTrue(hasPathSum(root, 26));
+    assertTrue(hasPathSum(root, 18));
+    assertFalse(hasPathSum(root, 100));
     
   }
+
+  private boolean hasPathSum(TreeNode node, int search) {
+    
+    
+    if (node == null){
+      return false;
+    } if (node.getValue() == search){
+      return true;
+    }else{
+      return (hasPathSum(node.getLeft(), search, node.getValue()) || hasPathSum(node.getRight(), search, node.getValue()));
+    }
+  }
+  
+  private boolean hasPathSum(TreeNode node, int search, int sum) {
+    
+    if (node == null){
+      return false;
+    }else{
+      int tmpSum = sum + node.getValue();
+      if (tmpSum == search){
+        return true;
+      }else{
+        return (hasPathSum(node.getLeft(), search, tmpSum) || hasPathSum(node.getRight(), search, tmpSum));
+      }
+    }
+  }
+    
+  
+
   
 }
