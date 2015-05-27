@@ -423,8 +423,72 @@ public class AlgorithmsTest {
     }
     System.out.println(String.format("Path for leaf length of %d is %s", pathLength, sb.toString()));
   }
-    
   
+  @Test
+  public void shouldMirrorBinaryTree(){
+    TreeNode root = createBinaryTree2();
+    System.out.println("---Before mirror---");
+    printTreePath(root, new int[0], 0);
+    mirror(root);
+    System.out.println("---After mirror---");
+    printTreePath(root, new int[0], 0);
+ 
+  }
 
+  private void mirror(TreeNode node) {
+    if(node == null){
+      return;
+    }else{
+      TreeNode tmpNode;
+      tmpNode = node.getLeft();
+      node.setLeft(node.getRight());
+      node.setRight(tmpNode);
+      mirror(node.getRight());
+      mirror(node.getLeft());
+    }
+  }
+  @Test
+  public void shouldDoubleTree(){
+    TreeNode root = new TreeNode(2, new TreeNode(1), new TreeNode(3));
+    doubleTree(root);
+    return;
+  }
+
+  private void doubleTree(TreeNode node) {
+    if (node == null){
+      return;
+    }else{
+      TreeNode newDuplicateNode = new TreeNode(node.getValue());
+      newDuplicateNode.setLeft(node.getLeft());
+      node.setLeft(newDuplicateNode);
+      
+      doubleTree(newDuplicateNode.getLeft());
+      doubleTree(node.getRight());
+      
+    }
+  }
   
+  @Test
+  public void shouldDetectSameTree(){
+    TreeNode root1 = createBinaryTree2();
+    TreeNode root2 = createBinaryTree2();
+    TreeNode root3 = createBinaryTree();
+    
+    int sameTree = sameTree(root1, root2);
+    
+    assertEquals("Same tree will have a sum of 0", 0, sameTree);
+    
+    int notSameTree = sameTree(root1, root3);
+    
+    assertNotEquals("Different trees will not have a sume of 0", 0, notSameTree);
+    
+  }
+
+  private int sameTree(TreeNode node1, TreeNode node2) {    
+    if (node1 != null && node2 != null){
+      return sameTree(node1.getLeft(), node2.getLeft()) - sameTree(node1.getRight(), node2.getRight());
+    }else{
+      return -1;
+    }
+  }
 }

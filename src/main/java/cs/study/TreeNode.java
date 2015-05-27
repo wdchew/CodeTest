@@ -105,4 +105,9 @@ public class TreeNode {
     }
   }
   
+  @Override
+  public String toString(){
+    return Integer.toString(value);
+  }
+  
 }
