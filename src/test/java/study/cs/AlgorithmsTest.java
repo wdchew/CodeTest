@@ -332,21 +332,7 @@ public class AlgorithmsTest {
   @Test
   public void shouldSumPathsOfTree(){
     
-//        5 
-//       / \ 
-//      4   8 
-//     /   / \ 
-//    11  13  4 
-//   /  \      \ 
-//  7    2      1
-    TreeNode root = new TreeNode(5, new TreeNode(4), new TreeNode(8));
-    TreeNode left = root.getLeft();
-    left.setLeft(new TreeNode(11, new TreeNode(7), new TreeNode(2)));
-    TreeNode right = root.getRight();
-    right.setLeft(new TreeNode(13));
-    right.setRight(new TreeNode(4));
-    right = right.getRight();
-    right.setRight(new TreeNode(1));
+    TreeNode root = createBinaryTree2();
     
     assertTrue(hasPathSum(root, 27));
     assertTrue(hasPathSum(root, 22));
@@ -354,6 +340,25 @@ public class AlgorithmsTest {
     assertTrue(hasPathSum(root, 18));
     assertFalse(hasPathSum(root, 100));
     
+  }
+
+  private TreeNode createBinaryTree2() {
+    //        5 
+    //       / \ 
+    //      4   8 
+    //     /   / \ 
+    //    11  13  4 
+    //   /  \      \ 
+    //  7    2      1
+        TreeNode root = new TreeNode(5, new TreeNode(4), new TreeNode(8));
+        TreeNode left = root.getLeft();
+        left.setLeft(new TreeNode(11, new TreeNode(7), new TreeNode(2)));
+        TreeNode right = root.getRight();
+        right.setLeft(new TreeNode(13));
+        right.setRight(new TreeNode(4));
+        right = right.getRight();
+        right.setRight(new TreeNode(1));
+    return root;
   }
 
   private boolean hasPathSum(TreeNode node, int search) {
@@ -380,6 +385,43 @@ public class AlgorithmsTest {
         return (hasPathSum(node.getLeft(), search, tmpSum) || hasPathSum(node.getRight(), search, tmpSum));
       }
     }
+  }
+  
+  @Test
+  public void shouldPrintPaths(){
+    TreeNode root = createBinaryTree2();
+    int[] path = new int[]{};
+    int pathLength = 0;
+    printTreePath(root, path, pathLength);
+    
+    
+  }
+
+  private void printTreePath(TreeNode node, int[] path, int pathLength) {
+    int currentPathLength = pathLength + 1;
+    int[] currentPath = new int[currentPathLength];
+    System.arraycopy(path, 0, currentPath, 0, pathLength);
+    currentPath[pathLength] = node.getValue();
+
+    if (node.getLeft() != null){
+      printTreePath(node.getLeft(), currentPath, currentPathLength);
+    }
+    if (node.getRight() != null){
+      printTreePath(node.getRight(), currentPath, currentPathLength);
+    }
+    if (node.getLeft() == null && node.getRight() == null){
+      printLeafPath(currentPath, currentPathLength);
+    } 
+    
+  }
+
+  private void printLeafPath(int[] path, int pathLength) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < path.length; i++){
+      sb.append(path[i]);
+      sb.append(" ");
+    }
+    System.out.println(String.format("Path for leaf length of %d is %s", pathLength, sb.toString()));
   }
     
   
