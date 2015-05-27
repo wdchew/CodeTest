@@ -310,6 +310,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldPrintTreePostOrder(){
+    // problem 6
     //     4 
     //    / \ 
     //   2   5 
@@ -331,6 +332,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldSumPathsOfTree(){
+    // problem 7
     
     TreeNode root = createBinaryTree2();
     
@@ -389,6 +391,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldPrintPaths(){
+    // problem 8
     TreeNode root = createBinaryTree2();
     int[] path = new int[]{};
     int pathLength = 0;
@@ -426,6 +429,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldMirrorBinaryTree(){
+    // problem 9
     TreeNode root = createBinaryTree2();
     System.out.println("---Before mirror---");
     printTreePath(root, new int[0], 0);
@@ -449,6 +453,7 @@ public class AlgorithmsTest {
   }
   @Test
   public void shouldDoubleTree(){
+    // problem 10
     TreeNode root = new TreeNode(2, new TreeNode(1), new TreeNode(3));
     doubleTree(root);
     return;
@@ -470,6 +475,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldDetectSameTree(){
+    // problem 11
     TreeNode root1 = createBinaryTree2();
     TreeNode root2 = createBinaryTree2();
     TreeNode root3 = createBinaryTree();
@@ -490,5 +496,37 @@ public class AlgorithmsTest {
     }else{
       return -1;
     }
+  }
+  
+  @Test
+  public void shouldCountTrees(){
+    int numTrees = 0;
+    
+    numTrees = countTrees(1);
+    assertEquals(1, numTrees);
+    
+    numTrees = countTrees(4);
+    assertEquals(14, numTrees);
+  }
+  /**
+   * counts the number of structurally unique binary trees given the number of keys
+   * @param numKeys
+   * @return
+   */
+  private int countTrees(int numKeys) {
+    
+    if (numKeys <= 1){
+      return 1;
+    }else{
+      int sum = 0;
+      int left, right, root;
+      for (root = 1; root <= numKeys; root ++){
+        left = countTrees(root - 1);
+        right = countTrees(numKeys - root);
+        sum += left*right;
+      }
+      return sum; 
+    }
+
   }
 }
