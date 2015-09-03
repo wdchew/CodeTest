@@ -500,6 +500,7 @@ public class AlgorithmsTest {
   
   @Test
   public void shouldCountTrees(){
+    // problem 12
     int numTrees = 0;
     
     numTrees = countTrees(1);
